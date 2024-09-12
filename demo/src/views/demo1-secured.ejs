@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demo 1 - Secured Version</title>
+  </head>
+  <body>
+    <h1>Demo 1 - Secured Version</h1>
+    <form id="search-form">
+      <label>Search User by Name:</label>
+      <input name="name" size="30" />
+      <button type="submit">Search</button>
+    </form>
+    <div id="search-results"></div>
+    <form id="comment-form" style="margin-top: 20px">
+      <label>Leave a Comment:</label>
+      <input name="comment" size="30" />
+      <button type="submit">Submit</button>
+    </form>
+    <h2>Comments</h2>
+    <div id="comments">
+      <% for (const comment of comments) { %>
+      <p><%= comment.comment %></p>
+      <% } %>
+    </div>
+    <a href="/">Back to Landing Page</a>
+    <script>
+      document
+        .getElementById("search-form")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+          const formData = new FormData(this);
+          const data = Object.fromEntries(formData.entries());
+          const response = await fetch("/demo1-secured/search", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+          const users = await response.json();
+          document.getElementById("search-results").innerHTML = JSON.stringify(
+            users,
+            null,
+            2
+          );
+        });
+
+      document
+        .getElementById("comment-form")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+          const formData = new FormData(this);
+          const data = Object.fromEntries(formData.entries());
+          const response = await fetch("/demo1-secured/comment", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+          const comments = await response.json();
+          document.getElementById("comments").innerHTML = comments
+            .map((comment) => `<p>${comment.comment}</p>`)
+            .join("");
+        });
+    </script>
+  </body>
+</html>

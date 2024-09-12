@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Security Demos</title>
+  </head>
+  <body>
+    <h1>Security Demos</h1>
+
+    <ul>
+      <li>
+        <a href="/demo1-vulnerable">Vulnerable Code</a>
+      </li>
+      <li>
+        <a href="/demo1-secured">Secured Code</a>
+      </li>
+    </ul>
+
+    <% if(user) { %>
+
+    <p>Logged in as: <%= user.username %></p>
+    <form action="/logout" method="POST">
+      <button type="submit">Logout</button>
+    </form>
+
+    <% } else { %>
+
+    <form action="/login" method="POST" autocomplete="off" data-1p-ignore>
+      <% if (error) { %>
+      <div style="color: red"><%= error %></div>
+      <% } %>
+      <div>
+        <label>Username:</label>
+        <input
+          name="user_name"
+          size="30"
+          autocomplete="off"
+          required
+          data-1p-ignore
+        />
+      </div>
+      <div>
+        <label>Password:</label>
+        <input
+          type="password"
+          name="login_pass"
+          size="30"
+          autocomplete="new-password"
+          required
+          data-1p-ignore
+        />
+      </div>
+      <div>
+        <button type="submit">Login</button>
+      </div>
+    </form>
+
+    <% } %>
+  </body>
+</html>
